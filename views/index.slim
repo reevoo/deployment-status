@@ -1,0 +1,23 @@
+doctype html
+html
+  head
+    meta charset="utf-8"
+    title Deployment Status
+    link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"
+
+  body
+    .container
+      h1 Deployment Status
+
+      table.table
+        - @events.each do |e|
+          tr
+            td = e.timestamp
+            td
+              h3
+                span.text-muted => e.issue_key
+                = e.issue_title
+              p
+                - e.issue_labels.each do |label|
+                  span.badge.badge-primary = label
+              p = e.issue_description

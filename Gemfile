@@ -2,11 +2,13 @@
 
 source "https://rubygems.org"
 
-gem "rake"
+gem "rack"
 gem "puma"
 gem "sinatra"
-gem "arbre"
-gem "jira-ruby"
+gem "slim"
+# gem "jira-ruby"
+gem "activerecord", "~> 5.1.0"
+gem "pg"
 
 
 group :development, :test do
