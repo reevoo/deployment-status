@@ -1,0 +1,66 @@
+name: deployment-status
+
+image:
+  repository: quay.io/reevoo/deployment-status
+
+env:
+  DATABASE_URL:
+    doc: postgresql url
+    secret: true
+  PORT:
+    doc: Puma port
+    value: 5000
+  WEB_CONCURRENCY:
+    doc: Number of Puma workers
+    value: 2
+  WEB_MIN_THREADS:
+    doc: Number of Puma threads
+    value: 2
+  WEB_MAX_THREADS:
+    doc: Number of Puma threads
+    value: 5
+
+components:
+  migrate:
+    kind: HookJob
+    command: ["bin/migrate"]
+    hook: pre-install,pre-upgrade
+    weight: 1
+
+  server:
+    replicas: 2
+    kind: Deployment
+    command: ["bin/server"]
+    ports:
+      - name: http
+        containerPort: 5000
+    livenessProbe:
+      initialDelaySeconds: 30
+      httpGet:
+        path: /healthcheck
+        port: http
+    readinessProbe:
+      initialDelaySeconds: 30
+      httpGet:
+        path: /healthcheck
+        port: http
+    service:
+      ports:
+        - port: 80
+          targetPort: http
+          name: http
+    resources:
+      requests:
+        memory: 450Mi
+        cpu: 500m
+      limits:
+        memory: 600Mi
+        cpu: 500m
+
+  ingress:
+    kind: Ingress
+    service: server
+    port: http
+    access: external
+
+version: 5.1.1-alpine

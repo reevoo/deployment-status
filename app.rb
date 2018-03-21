@@ -27,6 +27,10 @@ class App < Sinatra::Application
     slim :index
   end
 
+  get "/healthcheck" do
+    JSON.dump(status: "ok")
+  end
+
   post "/workflow-event-hook" do
     request.body.rewind
     payload = JSON.parse(request.body.read)

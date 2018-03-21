@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require_relative "../config/init"
+
+load Gem.bin_path("puma", "puma")

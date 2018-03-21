@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require_relative "../init"
+require_relative "../config/init"
 require "active_record"
 
 ActiveRecord::Base.establish_connection(ENV.fetch("DATABASE_URL"))
