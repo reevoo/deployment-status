@@ -1,7 +1,9 @@
+require "date"
+
 class WorkflowEvent < ActiveRecord::Base
   def self.create_from_payload!(payload)
     create!(
-      timestamp:          payload["timestamp"],
+      timestamp:          Time.at(payload["timestamp"].to_i / 1000).to_datetime,
       issue_key:          payload["issue"]["key"],
       issue_title:        payload["issue"]["fields"]["summary"],
       issue_description:  payload["issue"]["fields"]["description"],
