@@ -63,4 +63,11 @@ components:
     port: http
     access: external
 
-version: 5.1.1-alpine
+pipeline:
+  env:
+    RACK_ENV: test
+  tests:
+    audit:
+      script: |
+        bundle exec bundle-audit check --update
+#        bundle exec ruby-audit check

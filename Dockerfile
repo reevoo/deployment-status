@@ -1,4 +1,4 @@
-FROM quay.io/assemblyline/alpine:3.7 as dev
+FROM quay.io/assemblyline/alpine:3.6 as dev
 
 ENV APP_NAME=deployment-status \
     BUNDLE_SILENCE_ROOT_WARNING=1
@@ -42,7 +42,7 @@ RUN bundle install -j4 -r3 --system --frozen --without development test \
       spec \
       tmp
 
-FROM quay.io/assemblyline/alpine:3.7
+FROM quay.io/assemblyline/alpine:3.6
 ENV APP_NAME=deployment-status \
     RACK_ENV=production \
     PGSSLROOTCERT=/app/config/rds-combined-ca-bundle.pem

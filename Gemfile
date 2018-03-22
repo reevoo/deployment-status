@@ -14,5 +14,6 @@ gem "pg"
 group :development, :test do
   gem "dotenv"
   gem "pry"
+  gem "ruby_audit"
   gem "shotgun"
 end
