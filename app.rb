@@ -34,7 +34,9 @@ class App < Sinatra::Application
 
   post "/workflow-event-hook" do
     request.body.rewind
-    payload = JSON.parse(request.body.read)
+    json_payload = request.body.read
+    logger.info(json_payload)
+    payload = JSON.parse(json_payload)
     WorkflowEvent.create_from_payload!(payload)
   end
 end
