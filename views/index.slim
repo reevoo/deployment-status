@@ -7,7 +7,7 @@ html
 
   body
     .container
-      h1 Deployment Status
+      h1.display-4 style="margin:30px 0; text-align:center" Deployment Status
 
       table.table
         - @events.each do |e|
@@ -19,5 +19,5 @@ html
                 = e.issue_title
               p
                 - e.issue_labels.each do |label|
-                  span.badge.badge-primary = label
+                  span.badge.badge-primary => label
               p = e.issue_description
