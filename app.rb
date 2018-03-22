@@ -6,6 +6,7 @@ require_relative "./models/workflow_event"
 ActiveRecord::Base.establish_connection(ENV.fetch("DATABASE_URL"))
 
 class App < Sinatra::Application
+  set :views, "views"
 
   # get "/" do
   #   jira_client = JIRA::Client.new(
