@@ -7,7 +7,7 @@ class WorkflowEvent < ActiveRecord::Base
       issue_key:          payload["issue"]["key"],
       issue_title:        payload["issue"]["fields"]["summary"],
       issue_description:  payload["issue"]["fields"]["description"],
-      issue_labels:       payload["issue"]["fields"]["labels"],
+      issue_labels:       payload["issue"]["fields"]["labels"] || [],
       payload:            payload,
     )
   end

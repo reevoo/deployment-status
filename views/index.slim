@@ -18,6 +18,6 @@ html
                 span.text-muted => e.issue_key
                 = e.issue_title
               p
-                - e.issue_labels.each do |label|
+                - e.issue_labels.try(:each) do |label|
                   span.badge.badge-primary => label
               p = e.issue_description
