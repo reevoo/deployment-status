@@ -10,7 +10,7 @@ class App < Sinatra::Application
 
   get "/" do
     @grouped_events = WorkflowEvent.for_display.group_by do |event|
-      event.timestamp.strftime("%A %m/%d/%Y")
+      event.timestamp.strftime("%A %d/%m/%Y")
     end
     slim :index
   end
