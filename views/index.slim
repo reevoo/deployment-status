@@ -11,20 +11,26 @@ html
       }
       .row {
         border-top: #e5e5e5 1px solid;
-        margin-top: 30px;
+        margin-top: 15px;
         padding-top: 40px;
+      }
+      .item {
+        margin-bottom: 40px;
+      }
+      .pagination {
+        margin: 30px 0;
       }
   body
     .container
       h1.display-4 Deployment Status
 
-      table.table
-        - @grouped_events.each do |(date, events)|
-          .row
-            .col-md-3
-              h2 = date
-            .col-md-9
-              - events.each do |e|
+      - @events.group_by { |e| e.timestamp.strftime("%A %d/%m/%Y") }.each do |(date, events)|
+        .row
+          .col-md-3
+            h2 = date
+          .col-md-9
+            - events.each do |e|
+              .item
                 h3
                   span.text-muted => e.issue_key
                   = e.issue_title
@@ -32,3 +38,14 @@ html
                   - e.issue_labels.try(:each) do |label|
                     span.badge.badge-primary => label
                 p = e.issue_description
+
+      ul.pagination.justify-content-center
+        li.page-item class=(@events.first_page? && "disabled")
+          a.page-link href="?page=1" aria-label="Previous"
+            span &laquo;
+        - (1..@events.total_pages).each do |page|
+          li.page-item class=(@events.current_page == page && "active")
+            a.page-link href="?page=#{page}" = page
+        li.page-item class=(@events.last_page? && "disabled")
+          a.page-link href="?page=#{@events.total_pages}" aria-label="Next"
+            span &raquo;

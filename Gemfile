@@ -9,6 +9,7 @@ gem "slim"
 # gem "jira-ruby"
 gem "activerecord", "~> 5.1.0"
 gem "pg"
+gem "kaminari-activerecord"
 
 
 group :development, :test do

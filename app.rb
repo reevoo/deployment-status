@@ -9,9 +9,7 @@ class App < Sinatra::Application
   set :views, "views"
 
   get "/" do
-    @grouped_events = WorkflowEvent.for_display.group_by do |event|
-      event.timestamp.strftime("%A %d/%m/%Y")
-    end
+    @events = WorkflowEvent.for_display.page(params[:page]).per(10)
     slim :index
   end
 
