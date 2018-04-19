@@ -24,7 +24,7 @@ class App < Sinatra::Application
   # end
 
   get "/" do
-    @events = WorkflowEvent.select_without_payload.order(timestamp: :desc).all
+    @events = WorkflowEvent.visible.select_without_payload.order(timestamp: :desc).all
     slim :index
   end
 
