@@ -8,21 +8,6 @@ ActiveRecord::Base.establish_connection(ENV.fetch("DATABASE_URL"))
 class App < Sinatra::Application
   set :views, "views"
 
-  # get "/" do
-  #   jira_client = JIRA::Client.new(
-  #     username:     ENV.fetch("JIRA_USERNAME"),
-  #     password:     ENV.fetch("JIRA_API_KEY"),
-  #     site:         ENV.fetch("JIRA_SITE"),
-  #     auth_type:    :basic,
-  #     context_path: ''
-  #   )
-  #   project = jira_client.Project.find('PROD')
-
-  #   project.issues.map do |issue|
-  #     "#{issue.id} - #{issue.summary}"
-  #   end.join("\n")
-  # end
-
   get "/" do
     @grouped_events = WorkflowEvent.for_display.group_by do |event|
       event.timestamp.strftime("%A %m/%d/%Y")
