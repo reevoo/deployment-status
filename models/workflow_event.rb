@@ -1,8 +1,7 @@
 require "date"
 
 class WorkflowEvent < ActiveRecord::Base
-  scope :select_without_payload, -> { select(column_names - ["payload"]) }
-  scope :visible, -> { where(visible: true) }
+  scope :for_display, -> { select(column_names - ["payload"]).where(visible: true).order(timestamp: :desc) }
 
   def self.create_from_payload!(payload)
     create!(

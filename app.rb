@@ -24,7 +24,9 @@ class App < Sinatra::Application
   # end
 
   get "/" do
-    @events = WorkflowEvent.visible.select_without_payload.order(timestamp: :desc).all
+    @grouped_events = WorkflowEvent.for_display.group_by do |event|
+      event.timestamp.strftime("%A %m/%d/%Y")
+    end
     slim :index
   end
 

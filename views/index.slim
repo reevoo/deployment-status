@@ -4,20 +4,31 @@ html
     meta charset="utf-8"
     title Deployment Status
     link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"
-
+    css:
+      h1 {
+        margin: 50px 0;
+        text-align: center;
+      }
+      .row {
+        border-top: #e5e5e5 1px solid;
+        margin-top: 30px;
+        padding-top: 40px;
+      }
   body
     .container
-      h1.display-4 style="margin:30px 0; text-align:center" Deployment Status
+      h1.display-4 Deployment Status
 
       table.table
-        - @events.each do |e|
-          tr
-            td = e.timestamp
-            td
-              h3
-                span.text-muted => e.issue_key
-                = e.issue_title
-              p
-                - e.issue_labels.try(:each) do |label|
-                  span.badge.badge-primary => label
-              p = e.issue_description
+        - @grouped_events.each do |(date, events)|
+          .row
+            .col-md-3
+              h2 = date
+            .col-md-9
+              - events.each do |e|
+                h3
+                  span.text-muted => e.issue_key
+                  = e.issue_title
+                p
+                  - e.issue_labels.try(:each) do |label|
+                    span.badge.badge-primary => label
+                p = e.issue_description
