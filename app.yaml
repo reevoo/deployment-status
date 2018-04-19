@@ -61,7 +61,7 @@ components:
     kind: Ingress
     service: server
     port: http
-    access: internal
+    access: external
 
 pipeline:
   env:
