@@ -1,0 +1,13 @@
+version: '3.4'
+services:
+
+  app:
+    tty: true
+    build:
+      context: .
+      target: dev
+    environment:
+      RACK_ENV: test
+    volumes:
+      - .:/app
+    command: ["cat"]
