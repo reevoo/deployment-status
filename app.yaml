@@ -52,10 +52,10 @@ components:
     resources:
       requests:
         memory: 450Mi
-        cpu: 500m
+        cpu: 100m
       limits:
         memory: 600Mi
-        cpu: 500m
+        cpu: 200m
 
   ingress:
     kind: Ingress
