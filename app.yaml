@@ -28,7 +28,7 @@ components:
     weight: 1
 
   server:
-    replicas: 2
+    replicas: 1
     kind: Deployment
     command: ["bin/server"]
     ports:
@@ -51,11 +51,11 @@ components:
           name: http
     resources:
       requests:
-        memory: 450Mi
-        cpu: 100m
+        memory: 150Mi
+        cpu: 10m
       limits:
-        memory: 600Mi
-        cpu: 200m
+        memory: 300Mi
+        cpu: 100m
 
   ingress:
     kind: Ingress
