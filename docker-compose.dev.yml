@@ -1,0 +1,30 @@
+version: '3.4'
+services:
+
+  db:
+    image: postgres:9.6.1
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: deployment_status
+      POSTGRES_USER: dbuser
+      POSTGRES_PASSWORD: dbpass
+
+  app:
+    tty: true
+    build:
+      context: .
+      target: dev
+    depends_on:
+      - db
+    environment:
+      PORT: 9292
+      DATABASE_URL: postgres://dbuser:dbpass@db/deployment_status
+    ports:
+      - 9292:9292
+    volumes:
+      - .:/app
+    command: ["bin/server"]
+
+volumes:
+  db-data:

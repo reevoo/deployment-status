@@ -2,6 +2,7 @@ require "sinatra/base"
 require "active_record"
 require "json"
 require_relative "./models/workflow_event"
+require_relative "./models/deployment"
 
 ActiveRecord::Base.establish_connection(ENV.fetch("DATABASE_URL"))
 
@@ -9,7 +10,7 @@ class App < Sinatra::Application
   set :views, "views"
 
   get "/" do
-    @events = WorkflowEvent.for_display.page(params[:page]).per(10)
+    @events = Deployment.page(params[:page]).per(10)
     slim :index
   end
 
@@ -22,6 +23,7 @@ class App < Sinatra::Application
     json_payload = request.body.read
     logger.info(json_payload)
     payload = JSON.parse(json_payload)
-    WorkflowEvent.create_from_payload!(payload)
+    workflow_event = WorkflowEvent.create_from_payload!(payload)
+    Deployment.process_workflow_event!(workflow_event)
   end
 end
