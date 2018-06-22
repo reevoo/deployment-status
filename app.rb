@@ -10,7 +10,7 @@ class App < Sinatra::Application
   set :views, "views"
 
   get "/" do
-    @events = Deployment.page(params[:page]).per(10)
+    @events = Deployment.order(timestamp: :desc).page(params[:page]).per(10)
     slim :index
   end
 
