@@ -54,8 +54,8 @@ deploy:
 			--kube-context=${K8S_CLUSTER} \
 			--namespace=${K8S_NAMESPACE} \
 			-f app.yaml \
-			$(ENV_SPECIFIC_CONFIG) \
 			-f konfiguration/${APP_NAME}/${K8S_NAMESPACE}/app.yaml \
+			$(ENV_SPECIFIC_CONFIG) \
 			--set image.repository=${IMAGE_REPOSITORY},image.tag=${BUILDKITE_COMMIT} ${APP_NAME}-${K8S_NAMESPACE} \
 			konfiguration/charts/reevoo-app
 
