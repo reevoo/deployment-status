@@ -1,7 +1,7 @@
 require "rubygems"
 require "bundler"
 
-unless ENV["RACK_ENV"] == "production"
+if %w[development test].include?(ENV["RACK_ENV"])
   require "dotenv"
   Dotenv.load
 end
