@@ -8,24 +8,62 @@ steps:
     command: |
       make test
 
-  - block: ":rocket:"
+  - block: ":rocket: Deploy to staging! :chicken:"
+    fields:
+      - select: "I'm deploying to STAGING!"
+        key: "unleash-the-chicken"
+        default: "yes"
+        options:
+          - label: ":chicken: yes, release the chicken! :rooster:"
+            value: "yes"
 
   - label: ":helm: :arrow_right: :k8s: staging"
     command: |
       make deploy
     plugins:
-      ssh://git@github.com/reevoo/konfiguration-buildkite-plugin.git#v0.0.2: ~
+      - ssh://git@github.com/reevoo/konfiguration-buildkite-plugin.git#v0.0.2: ~
+      - ssh://git@github.com/reevoo/git-buildkite-plugin.git#v0.0.3:
+          repo: git@github.com:reevoo/charts.git
+          branch: v0.0.9
+          dest: charts
+      - docker#v2.0.0:
+          image: "quay.io/reevoo/kube-release:eks"
+          workdir: "/app"
+          volumes:
+            - ".:/app"
+          environment:
+            - "K8S_CLUSTER"
+            - "K8S_NAMESPACE"
+            - "BUILDKITE_COMMIT"
     env:
-      K8S_CLUSTER: leyton-orbiter
+      K8S_CLUSTER: apollo
       K8S_NAMESPACE: staging
 
-  - block: ":rocket:"
+  - block: ":rocket: Deploy to production! :dragon:"
+    fields:
+      - select: "I'm sure, I'm deploying to PRODUCTION!"
+        key: "unleash-the-dragon"
+        options:
+          - label: ":dragon_face: yes, unleash the dragon! :dragon:"
+            value: "yes"
 
   - label: ":helm: :arrow_right: :k8s: production"
-    command: |
-      make deploy
+    command: make deploy
     plugins:
-      ssh://git@github.com/reevoo/konfiguration-buildkite-plugin.git#v0.0.2: ~
+      - ssh://git@github.com/reevoo/konfiguration-buildkite-plugin.git#v0.0.2: ~
+      - ssh://git@github.com/reevoo/git-buildkite-plugin.git#v0.0.3:
+          repo: git@github.com:reevoo/charts.git
+          branch: v0.0.9
+          dest: charts
+      - docker#v2.0.0:
+          image: "quay.io/reevoo/kube-release:eks"
+          workdir: "/app"
+          volumes:
+            - ".:/app"
+          environment:
+            - "K8S_CLUSTER"
+            - "K8S_NAMESPACE"
+            - "BUILDKITE_COMMIT"
     env:
-      K8S_CLUSTER: leyton-orbiter
+      K8S_CLUSTER: apollo
       K8S_NAMESPACE: production

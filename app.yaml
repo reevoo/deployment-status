@@ -20,45 +20,33 @@ env:
     doc: Number of Puma threads
     value: 5
 
-components:
+hooks:
   migrate:
-    kind: HookJob
     command: ["bin/migrate"]
     hook: pre-install,pre-upgrade
     weight: 1
 
-  server:
-    replicas: 1
-    kind: Deployment
-    command: ["bin/server"]
-    ports:
-      - name: http
-        containerPort: 5000
-    livenessProbe:
-      initialDelaySeconds: 30
-      httpGet:
-        path: /healthcheck
-        port: http
-    readinessProbe:
-      initialDelaySeconds: 30
-      httpGet:
-        path: /healthcheck
-        port: http
-    service:
-      ports:
-        - port: 80
-          targetPort: http
-          name: http
-    resources:
-      requests:
-        memory: 150Mi
-        cpu: 10m
-      limits:
-        memory: 300Mi
-        cpu: 100m
+app:
+  replicas: 1
+  command: ["bin/server"]
+  port: 5000
+  livenessProbe:
+    initialDelaySeconds: 30
+    httpGet:
+      path: /healthcheck
+      port: http
+  readinessProbe:
+    initialDelaySeconds: 30
+    httpGet:
+      path: /healthcheck
+      port: http
+  resources:
+    requests:
+      memory: 150Mi
+      cpu: 10m
+    limits:
+      memory: 300Mi
+      cpu: 100m
 
-  ingress:
-    kind: Ingress
-    service: server
-    port: http
-    access: external
+ingress:
+  access: external

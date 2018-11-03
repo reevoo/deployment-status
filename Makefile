@@ -4,8 +4,10 @@ BUILD				:= $(shell date -u +%FT%T%z)
 GIT_HASH			:= $(shell git rev-parse HEAD)
 GIT_REPO			:= $(shell git config --get remote.origin.url)
 BUILDKITE_COMMIT	?= $(GIT_HASH)
-APP_NAME 			?= $(call get_param, "name")
-IMAGE_REPOSITORY	?= $(call get_param, "image.repository")
+AWS_ACCOUNT			?= 896069866492
+AWS_REGION			?= eu-west-1
+APP_NAME			:= deployment-status
+IMAGE_REPOSITORY	:= quay.io/reevoo/deployment-status
 ifneq (,$(wildcard env/${K8S_NAMESPACE}_app.yaml))
 	ENV_SPECIFIC_CONFIG := -f env/${K8S_NAMESPACE}_app.yaml
 endif
@@ -13,15 +15,6 @@ endif
 export APP_NAME
 export IMAGE_REPOSITORY
 export BUILDKITE_COMMIT
-
-define get_param
-$(shell \
-docker run --rm \
-	-v ${PWD}/app.yaml:/app.yaml \
-	quay.io/reevoo/kube-release \
-	/bin/sh -c \
-	"cat /app.yaml 2> /dev/null | yq read - $(1)" | grep -v null)
-endef
 
 .PHONY: up
 up:
@@ -43,21 +36,24 @@ build:
 publish: build
 	docker push ${IMAGE_REPOSITORY}:${BUILDKITE_COMMIT}
 
+.PHONY: kubeconfig
+kubeconfig:
+	aws eks update-kubeconfig \
+		--region $(AWS_REGION) \
+		--name ${K8S_CLUSTER} \
+		--role-arn arn:aws:iam::$(AWS_ACCOUNT):role/${K8S_CLUSTER}-admin
+
 .PHONY: deploy
-deploy:
-	docker run --rm \
-		-v ~/.kube:/root/.kube \
-		-v ${PWD}:/app \
-		-w /app \
-		quay.io/reevoo/kube-release \
-		helm upgrade --install \
-			--kube-context=${K8S_CLUSTER} \
-			--namespace=${K8S_NAMESPACE} \
-			-f app.yaml \
-			-f konfiguration/${APP_NAME}/${K8S_NAMESPACE}/app.yaml \
-			$(ENV_SPECIFIC_CONFIG) \
-			--set image.repository=${IMAGE_REPOSITORY},image.tag=${BUILDKITE_COMMIT} ${APP_NAME}-${K8S_NAMESPACE} \
-			konfiguration/charts/reevoo-app
+deploy: kubeconfig
+	helm upgrade --install \
+		--kube-context=arn:aws:eks:$(AWS_REGION):$(AWS_ACCOUNT):cluster/${K8S_CLUSTER} \
+		--namespace=${K8S_NAMESPACE} \
+		-f app.yaml \
+		$(ENV_SPECIFIC_CONFIG) \
+		-f konfiguration/${APP_NAME}/${K8S_NAMESPACE}/app.yaml \
+		--set image.repository=${IMAGE_REPOSITORY},image.tag=${BUILDKITE_COMMIT} \
+		${APP_NAME}-${K8S_NAMESPACE} \
+		charts/reevooapp
 
 .PHONY: clean
 clean: down
