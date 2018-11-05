@@ -24,7 +24,7 @@ steps:
       - ssh://git@github.com/reevoo/konfiguration-buildkite-plugin.git#v0.0.2: ~
       - ssh://git@github.com/reevoo/git-buildkite-plugin.git#v0.0.3:
           repo: git@github.com:reevoo/charts.git
-          branch: v0.0.9
+          branch: v0.0.10
           dest: charts
       - docker#v2.0.0:
           image: "quay.io/reevoo/kube-release:eks"
@@ -53,7 +53,7 @@ steps:
       - ssh://git@github.com/reevoo/konfiguration-buildkite-plugin.git#v0.0.2: ~
       - ssh://git@github.com/reevoo/git-buildkite-plugin.git#v0.0.3:
           repo: git@github.com:reevoo/charts.git
-          branch: v0.0.9
+          branch: v0.0.10
           dest: charts
       - docker#v2.0.0:
           image: "quay.io/reevoo/kube-release:eks"
