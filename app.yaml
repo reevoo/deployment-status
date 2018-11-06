@@ -49,4 +49,4 @@ app:
       cpu: 100m
 
 ingress:
-  access: external
+  access: internal
