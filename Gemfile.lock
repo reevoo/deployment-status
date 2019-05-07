@@ -33,7 +33,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
     puma (3.11.4)
-    rack (2.0.5)
+    rack (2.0.7)
     rack-protection (2.0.3)
       rack
     ruby_audit (1.2.0)
@@ -72,4 +72,4 @@ DEPENDENCIES
   slim
 
 BUNDLED WITH
-   1.16.1
+   1.17.3

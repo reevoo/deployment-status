@@ -1,6 +1,8 @@
-FROM ruby:2.5.1-alpine3.7 as dev
+FROM ruby:2.5.3-alpine3.7 as dev
 
 ENV APP_NAME=deployment-status
+
+RUN gem update --system
 
 RUN apk add --no-cache \
     ca-certificates \
