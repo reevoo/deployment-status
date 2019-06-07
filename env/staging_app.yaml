@@ -1,3 +1,11 @@
 env:
   RACK_ENV:
     value: staging
+
+components:
+  ingress:
+    host: deploys-staging.reevoocloud.com
+
+ingress:
+  host: deploys-staging.reevoocloud.com
+

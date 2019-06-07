@@ -1,3 +1,10 @@
 env:
   RACK_ENV:
     value: production
+
+components:
+  ingress:
+    host: deploys.reevoo.com
+
+ingress:
+  host: deploys.reevoo.com

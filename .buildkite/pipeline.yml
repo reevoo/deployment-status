@@ -65,5 +65,5 @@ steps:
             - "K8S_NAMESPACE"
             - "BUILDKITE_COMMIT"
     env:
-      K8S_CLUSTER: apollo
+      K8S_CLUSTER: zeus
       K8S_NAMESPACE: production

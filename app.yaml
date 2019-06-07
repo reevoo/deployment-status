@@ -42,11 +42,11 @@ app:
       port: http
   resources:
     requests:
-      memory: 150Mi
+      memory: 128Mi
       cpu: 10m
     limits:
-      memory: 300Mi
-      cpu: 100m
+      memory: 192Mi
+      cpu: 50m
 
 ingress:
   access: internal
